@@ -17,7 +17,7 @@ names (Datos)[2] = "ref_values"#change the column 2 to ref_value
   bias_ref_report<-cbind(ref_values,avge_bias,p_values)#matrix references bias report 
   #Bias average report
  t.test(sesgo_i,alternative = "two.sided",mu=0)
-#Análisis y gráfica de regresión lineal
+#Análisis y gráfica de regresión linealidad
 merge(Datos,bias_ref_report)
 regresion<-lm(formula = sesgo_i~Datos$ref_values)#Establce las constantes de la regresión lineal
 anova(regresion)# Analisis de varianza de la regresion
