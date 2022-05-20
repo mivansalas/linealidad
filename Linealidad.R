@@ -2,7 +2,6 @@
 #Author Ing. Mario Ivan Salas Dominguez
 #
 library(readxl)#import Excel data librarywd
-library(ggplot2)#import ggplot library
 Datos <- read_excel("Linealidad_r_dataset.xlsx",col_names = TRUE)#read the data in excel of the study.
 names (Datos)[2] = "ref_values"#change the column 2 to ref_value
 #References and average bias evaluation
@@ -15,11 +14,14 @@ names (Datos)[2] = "ref_values"#change the column 2 to ref_value
   t_values<-c(avge_bias/(sd_bias/sqrt(n_bias)))#Evaluar los valore del estadistico t
   p_values<-c(2*pt(abs(t_values),n_bias-1,lower.tail = FALSE))#Evalua los p-values
   bias_ref_report<-cbind(ref_values,avge_bias,p_values)#matrix references bias report 
-  #Bias average report
+#Bias average report
  t.test(sesgo_i,alternative = "two.sided",mu=0)
-#Análisis y gráfica de regresión linealidad
-merge(Datos,bias_ref_report)
+#regresión linealidad
+ldata<-merge(Datos,bias_ref_report)
 regresion<-lm(formula = sesgo_i~Datos$ref_values)#Establce las constantes de la regresión lineal
-anova(regresion)# Analisis de varianza de la regresion
 summary(regresion)#Resumen del analisis de regresion
-ggplot(Datos, aes(x = ref_values, y = sesgo_i)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x, level=0.95)
+#Grafico de regresión
+plot(ldata$ref_values,ldata$sesgo_i, col="blue")
+points((avge_bias~ref_values),col="red")
+dim(avge_bias)
+       
