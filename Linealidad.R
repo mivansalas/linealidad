@@ -5,6 +5,7 @@ library(readxl)#import Excel data librarywd
 Datos <- read_excel("Linealidad_r_dataset.xlsx",col_names = TRUE)#read the data in excel of the study.
 names (Datos)[2] = "ref_values"#change the column 2 to ref_value
 #References and average bias evaluation
+  tol_var<-16.5368
   sesgo_i<-c(Datos$Respuesta-Datos$ref_values)#Bias by references group
   Datos<-cbind(Datos,sesgo_i)#Actualiza los datos con los sesgos.
   avge_bias<-tapply(Datos$sesgo_i,Datos$ref_values ,mean)#Mean by references group
@@ -17,6 +18,12 @@ names (Datos)[2] = "ref_values"#change the column 2 to ref_value
   ldata<-merge(Datos,bias_ref_report)
   regresion<-lm(formula = sesgo_i~Datos$ref_values)#Establce las constantes de la regresión lineal
   summary(regresion)#Resumen del analisis de regresion
+#bias and linearity percent report
+lin<-abs(regresion[["coefficients"]][["Datos$ref_values"]]*tol_var)
+percent_lin<-lin*100/tol_var)
+percent_bias<-abs(mean(avge_bias)*100/tol_var)
+percent_report<-cbind(percent_lin,percent_bias)
+barplot(percent_report,col = "blue",ylab = "Percent")
 #linearity regression plot
 plot(ldata$ref_values,ldata$sesgo_i, col="blue",xlab = "Reference values",ylab = "Bias", main = "Linearity and bias report
      ")#plot bias values
