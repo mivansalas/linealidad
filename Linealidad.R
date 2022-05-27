@@ -14,14 +14,15 @@ names (Datos)[2] = "ref_values"#change the column 2 to ref_value
   t_values<-c(avge_bias/(sd_bias/sqrt(n_bias)))#Evaluar los valore del estadistico t
   p_values<-c(2*pt(abs(t_values),n_bias-1,lower.tail = FALSE))#Evalua los p-values
   bias_ref_report<-cbind(ref_values,avge_bias,p_values)#matrix references bias report 
-#Bias average report
- t.test(sesgo_i,alternative = "two.sided",mu=0)
-#regresión linealidad
-ldata<-merge(Datos,bias_ref_report)
-regresion<-lm(formula = sesgo_i~Datos$ref_values)#Establce las constantes de la regresión lineal
-summary(regresion)#Resumen del analisis de regresion
-#Grafico de regresión
-plot(ldata$ref_values,ldata$sesgo_i, col="blue")
-points((avge_bias~ref_values),col="red")
-dim(avge_bias)
-       
+  ldata<-merge(Datos,bias_ref_report)
+  regresion<-lm(formula = sesgo_i~Datos$ref_values)#Establce las constantes de la regresión lineal
+  summary(regresion)#Resumen del analisis de regresion
+#linearity regression plot
+plot(ldata$ref_values,ldata$sesgo_i, col="blue",xlab = "Reference values",ylab = "Bias", main = "Linearity and bias report
+     ")#plot bias values
+points(ref_values,avge_bias,col="red",pch=16)#plot bias average
+abline(h=0,lty=2)       
+abline(regresion,col="red")
+preds <- predict(regresion,interval = 'confidence')
+lines(Datos$ref_values, preds[ ,3], lty = 'dashed', col = 'blue')
+lines(Datos$ref_values, preds[ ,2], lty = 'dashed', col = 'blue')
