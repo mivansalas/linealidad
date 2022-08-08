@@ -25,3 +25,4 @@ abline(model)
 #add dashed lines for confidence bands
 lines(newx, preds[ ,3], lty = 'dashed', col = 'blue')
 lines(newx, preds[ ,2], lty = 'dashed', col = 'blue')
+

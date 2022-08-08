@@ -6,9 +6,9 @@ Datos <- read_excel("Linealidad_r_dataset.xlsx",col_names = TRUE)#read the data 
 names (Datos)[2] = "ref_values"#change the column 2 to ref_value
 #References and average bias evaluation
   tol_var<-16.5368
-  sesgo_i<-c(Datos$Respuesta-Datos$ref_values)#Bias by references group
-  Datos<-cbind(Datos,sesgo_i)#Actualiza los datos con los sesgos.
-  avge_bias<-tapply(Datos$sesgo_i,Datos$ref_values ,mean)#Mean by references group
+  sesgo_i<-c(Datos$Respuesta-Datos$ref_values)#Bias by each measure
+  Datos<-cbind(Datos,sesgo_i)#Bias dataframe update.
+  avge_bias<-tapply(Datos$sesgo_i,Datos$ref_values ,mean)#Bias mean by references group
   sd_bias<-tapply(Datos$sesgo_i,Datos$ref_values ,sd)#SD by references group
   n_bias<-tapply(Datos$sesgo_i,Datos$ref_values ,length)#number of values by references
   ref_values<-unique(Datos$ref_values)#Get the reference values
